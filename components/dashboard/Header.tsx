@@ -88,12 +88,12 @@ export function Header() {
         </button>
 
         <div className="flex items-center gap-2 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-secondary transition-colors group">
-          <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-linear-to-br from-blue-600 to-indigo-500 shadow-sm">
-            JD
+          <div className="w-8 h-8 rounded-full overflow-hidden border border-border shadow-sm">
+            <img src="/placeholder-user.jpg" alt="Mr. Phiri" className="w-full h-full object-cover" />
           </div>
           <div className="hidden sm:block">
-            <div className="text-[11px] font-semibold text-foreground leading-none">John Doe</div>
-            <div className="text-[9px] text-muted-foreground">Admin Site</div>
+            <div className="text-[11px] font-semibold text-foreground leading-none">Mr. Phiri</div>
+            <div className="text-[9px] text-muted-foreground uppercase font-mono tracking-tighter">Site Manager</div>
           </div>
           <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
         </div>

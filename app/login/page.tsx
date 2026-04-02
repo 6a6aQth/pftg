@@ -22,7 +22,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center p-6 selection:bg-emerald-500/30">
+    <div className="h-screen w-screen bg-black flex items-center justify-center p-6 overflow-hidden selection:bg-emerald-500/30 fixed inset-0">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
