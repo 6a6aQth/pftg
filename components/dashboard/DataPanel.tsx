@@ -2,8 +2,10 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { LineChart, Line, ResponsiveContainer, Tooltip as RechartTooltip, XAxis } from 'recharts';
-import { AlertTriangle, CheckCircle2, Eye, Radio, MessageSquare, FileText, Leaf, Droplets } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Eye, Radio, FileText, Leaf, Droplets, Zap, Sliders } from 'lucide-react';
 import type { Plot } from '@/lib/plotData';
+import Link from 'next/link';
+import { useState, useEffect } from 'react';
 
 interface Props { selectedPlot: Plot | null }
 
@@ -20,6 +22,15 @@ const urgencyConfig = {
 };
 
 export function DataPanel({ selectedPlot }: Props) {
+  const [showSMS, setShowSMS] = useState(false);
+
+  useEffect(() => {
+    if (showSMS) {
+      const t = setTimeout(() => setShowSMS(false), 5000);
+      return () => clearTimeout(t);
+    }
+  }, [showSMS]);
+
   if (!selectedPlot) {
     return (
       <div className="flex flex-col items-center justify-center text-center px-4"
@@ -35,13 +46,38 @@ export function DataPanel({ selectedPlot }: Props) {
   const ndviColor = selectedPlot.ndvi > 0.65 ? '#10B981' : selectedPlot.ndvi > 0.50 ? '#F59E0B' : '#EF4444';
   const SIcon = s.Icon;
 
+  // Mock yield forecast: 4.8t - 6.2t per ha
+  const yieldVal = (4.8 + (selectedPlot.ndvi * 1.8)).toFixed(1);
+
   return (
     <AnimatePresence mode="wait">
       <motion.div key={selectedPlot.id}
         initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col h-full overflow-y-auto flex-shrink-0"
+        className="flex flex-col h-full overflow-y-auto flex-shrink-0 relative"
         style={{ width: 280, background: '#07102A', borderLeft: '1px solid rgba(255,255,255,0.07)' }}>
+
+        {/* SMS Simulation Overlay */}
+        <AnimatePresence>
+          {showSMS && (
+            <motion.div
+              initial={{ y: 50, opacity: 0, scale: 0.9 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              className="absolute bottom-4 left-4 right-4 z-[100] bg-white rounded-xl p-3 shadow-2xl flex gap-3 border border-slate-200"
+            >
+              <div className="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-[10px] font-bold">AV</div>
+              <div className="flex-1">
+                <div className="flex justify-between items-center">
+                  <p className="text-[10px] font-bold text-slate-900">AgriVerse Agent</p>
+                  <span className="text-[8px] text-slate-400 uppercase font-mono">Now</span>
+                </div>
+                <p className="text-[10px] text-slate-700 leading-tight">ALERT: {selectedPlot.recommendation}</p>
+                <p className="text-[8px] text-slate-400 mt-1 uppercase font-mono">Sent via Twilio Gateway</p>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Header */}
         <div className="px-4 py-3 border-b sticky top-0 z-10"
@@ -67,19 +103,39 @@ export function DataPanel({ selectedPlot }: Props) {
             </div>
           </div>
 
-          {/* NDVI + Health metrics */}
+          {/* NDVI + Health + Yield metrics */}
           <div className="grid grid-cols-3 gap-2">
             {[
               { label: 'NDVI', value: selectedPlot.ndvi.toFixed(2), color: ndviColor },
               { label: 'Health', value: `${selectedPlot.health}%`, color: selectedPlot.health > 70 ? '#10B981' : selectedPlot.health > 45 ? '#F59E0B' : '#EF4444' },
-              { label: 'Humidity', value: `${selectedPlot.humidity}%`, color: '#06B6D4' },
+              { label: 'Yield Est.', value: `${yieldVal}t/h`, color: '#A855F7' },
             ].map(m => (
-              <div key={m.label} className="rounded-lg px-2.5 py-2.5 text-center"
+              <div key={m.label} className="rounded-lg px-2 text-center py-2"
                 style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                <div className="text-[10px] text-slate-500 font-mono leading-tight">{m.label}</div>
-                <div className="text-base font-bold mt-0.5" style={{ color: m.color }}>{m.value}</div>
+                <div className="text-[9px] text-slate-500 font-mono leading-tight uppercase">{m.label}</div>
+                <div className="text-sm font-bold mt-0.5" style={{ color: m.color }}>{m.value}</div>
               </div>
             ))}
+          </div>
+
+          {/* Yield Forecast Visual [NEW] */}
+          <div className="rounded-lg px-3 py-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="flex justify-between items-center mb-2">
+              <div className="text-[10px] font-mono text-slate-500 tracking-wider uppercase">Annual Yield Forecast</div>
+              <div className="text-[10px] font-bold text-emerald-400">+12.4%</div>
+            </div>
+            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${(Number(yieldVal) / 8) * 100}%` }}
+                transition={{ duration: 1.5, ease: "easeOut" }}
+                className="h-full bg-gradient-to-r from-emerald-500 to-blue-500"
+              />
+            </div>
+            <div className="flex justify-between mt-1 text-[9px] font-mono text-slate-600 uppercase tracking-tighter">
+              <span>Min: 3.2t</span>
+              <span>Max: 8.0t</span>
+            </div>
           </div>
 
           {/* NDVI Trend Chart */}
@@ -127,21 +183,20 @@ export function DataPanel({ selectedPlot }: Props) {
 
           {/* Action buttons */}
           <div className="space-y-2">
-            <button className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold text-white transition-all hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg,#059669,#10B981)', boxShadow: '0 0 16px rgba(16,185,129,0.2)' }}>
-              <MessageSquare className="w-3.5 h-3.5" />
-              Send SMS Alert
+            <button
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-semibold text-white transition-all bg-white/5 border border-white/10 hover:bg-white/10 active:scale-95 shadow-[0_0_20px_rgba(255,255,255,0.02)]"
+            >
+              <Sliders className="w-3.5 h-3.5 text-blue-400" />
+              Calibrate Plot
             </button>
             <div className="grid grid-cols-2 gap-2">
-              <button className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs text-slate-300 hover:bg-white/[0.06] transition-colors"
-                style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
-                <FileText className="w-3.5 h-3.5" />
-                Full Report
-              </button>
-              <button className="flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs text-slate-300 hover:bg-white/[0.06] transition-colors"
-                style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+              <Link href="/dashboard/soil-scan" className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[11px] font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                 <Droplets className="w-3.5 h-3.5" />
                 Soil Scan
+              </Link>
+              <button className="flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[11px] font-semibold text-slate-300 bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
+                <FileText className="w-3.5 h-3.5" />
+                Report
               </button>
             </div>
           </div>

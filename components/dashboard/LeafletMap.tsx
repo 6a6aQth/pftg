@@ -130,23 +130,46 @@ export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId 
                 );
             })}
 
-            {/* Fertilizer Progress Heatmap [NEW] */}
-            {activeLayers.fertilizerHeatmap && Object.entries(PLOT_POLYGONS).map(([name, p]) => {
-                const heatColors: Record<string, string> = {
-                    'Plot A': '#10B981',
-                    'Plot B': '#EF4444',
-                    'Plot C': '#F59E0B',
-                };
-                return (
-                    <Polygon
-                        key={`heat-${name}`}
-                        positions={p.coords}
-                        pathOptions={{ color: 'transparent', fillColor: heatColors[name], fillOpacity: 0.5, weight: 0 }}
-                    >
-                        <Tooltip sticky>{name} · Fertilizer Progress · {name === 'Plot A' ? '100%' : name === 'Plot B' ? '12%' : '65%'}</Tooltip>
-                    </Polygon>
-                );
-            })}
+            {/* Fertilizer Progress Heatmap [NEW] - Professional Mesh Gradients */}
+            {activeLayers.fertilizerHeatmap && (
+                <>
+                    <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+                        <defs>
+                            <linearGradient id="grad-A" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#10B981" stopOpacity="0.7" />
+                                <stop offset="100%" stopColor="#34D399" stopOpacity="0.4" />
+                            </linearGradient>
+                            <linearGradient id="grad-B" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#EF4444" stopOpacity="0.7" />
+                                <stop offset="50%" stopColor="#F59E0B" stopOpacity="0.5" />
+                                <stop offset="100%" stopColor="#991B1B" stopOpacity="0.8" />
+                            </linearGradient>
+                            <linearGradient id="grad-C" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stopColor="#F59E0B" stopOpacity="0.7" />
+                                <stop offset="100%" stopColor="#D97706" stopOpacity="0.4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    {Object.entries(PLOT_POLYGONS).map(([name, p]) => {
+                        const gradId = name === 'Plot A' ? 'grad-A' : name === 'Plot B' ? 'grad-B' : 'grad-C';
+                        return (
+                            <Polygon
+                                key={`heat-${name}`}
+                                positions={p.coords}
+                                pathOptions={{
+                                    color: 'rgba(255,255,255,0.2)',
+                                    fillColor: `url(#${gradId})`,
+                                    fillOpacity: 1,
+                                    weight: 0.5,
+                                    dashArray: '2 2'
+                                }}
+                            >
+                                <Tooltip sticky>{name} · Fertilizer Progress · {name === 'Plot A' ? '100%' : name === 'Plot B' ? '12%' : '65%'}</Tooltip>
+                            </Polygon>
+                        );
+                    })}
+                </>
+            )}
 
             {/* Temperature zone - Centered on Farm */}
             {activeLayers.temperature && (

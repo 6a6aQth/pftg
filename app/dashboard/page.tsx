@@ -9,13 +9,13 @@ import { BottomPanel } from '@/components/dashboard/BottomPanel';
 import { PLOTS } from '@/lib/plotData';
 
 const DEFAULT_LAYERS: ActiveLayers = {
-  ndvi: true,
+  ndvi: false,
   rainfall: true,
   soilMoisture: false,
   temperature: false,
   alerts: true,
   cropHealth: true,
-  fertilizerHeatmap: false,
+  fertilizerHeatmap: true,
 };
 
 export default function DashboardPage() {
