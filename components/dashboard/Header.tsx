@@ -1,72 +1,82 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Bell, ChevronDown, User } from 'lucide-react';
-import { useState } from 'react';
+import { Bell, ChevronDown, Satellite, Clock } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export function Header() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [time, setTime] = useState('');
+  const [date, setDate] = useState('');
+
+  useEffect(() => {
+    const tick = () => {
+      const n = new Date();
+      setTime(n.toTimeString().slice(0, 8));
+      setDate(n.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }));
+    };
+    tick();
+    const id = setInterval(tick, 1000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <motion.div
-      initial={{ y: -50, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      className="bg-card border-b border-border px-8 py-4 flex items-center justify-between sticky top-0 z-40"
-    >
-      {/* Left: Farm Selector */}
+    <div className="flex items-center justify-between px-4 h-12 border-b flex-shrink-0"
+      style={{ background: '#080F22', borderColor: 'rgba(255,255,255,0.08)' }}>
+
+      {/* Left: Logo + status */}
       <div className="flex items-center gap-4">
-        <div className="relative">
-          <button className="flex items-center gap-2 px-4 py-2 bg-input border border-border rounded-lg text-foreground hover:bg-input/80 transition-colors">
-            <span className="font-medium">Chitedze Farm</span>
-            <ChevronDown className="w-4 h-4 text-muted-foreground" />
-          </button>
+        <div className="flex items-center gap-2">
+          <div className="w-6 h-6 rounded-md flex items-center justify-center"
+            style={{ background: 'linear-gradient(135deg,#059669,#10B981)' }}>
+            <span className="text-xs">🌾</span>
+          </div>
+          <span className="text-white font-bold text-sm tracking-wide">AgriVerse</span>
+          <span className="text-slate-600 text-xs font-mono">|</span>
+          <span className="text-slate-400 text-xs font-mono">Chitedze Farm Complex</span>
         </div>
-
-        {/* Status Indicator */}
-        <motion.div
-          animate={{ opacity: [0.6, 1, 0.6] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="flex items-center gap-2"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-2 h-2 bg-accent rounded-full"
-          />
-          <span className="text-sm text-accent font-medium">System Active</span>
-        </motion.div>
-      </div>
-
-      {/* Right: Notifications and Profile */}
-      <div className="flex items-center gap-6">
-        <motion.button
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="relative p-2 text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <Bell className="w-5 h-5" />
-          <motion.span
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"
-          />
-        </motion.button>
-
-        <div className="relative">
-          <motion.button
-            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-            whileHover={{ scale: 1.05 }}
-            className="flex items-center gap-3 px-3 py-2 bg-input border border-border rounded-lg text-foreground hover:bg-input/80 transition-colors"
-          >
-            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center text-sm font-bold">
-              JD
-            </div>
-            <span className="hidden sm:inline text-sm font-medium">John Doe</span>
-            <ChevronDown className="w-4 h-4 text-muted-foreground" />
-          </motion.button>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
+          style={{ borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.05)' }}>
+          <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+          <span className="text-[10px] text-emerald-400 font-mono tracking-wider">SYSTEMS OPERATIONAL</span>
         </div>
       </div>
-    </motion.div>
+
+      {/* Center: Farm selector */}
+      <div className="flex items-center gap-3">
+        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors"
+          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#CBD5E1' }}>
+          <span>Chitedze Farm</span>
+          <ChevronDown className="w-3 h-3 text-slate-500" />
+        </button>
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-mono"
+          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#60A5FA' }}>
+          <Satellite className="w-3 h-3" />
+          <span>Next pass 14:32 UTC</span>
+        </div>
+      </div>
+
+      {/* Right: Clock + alerts + user */}
+      <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1.5 text-xs font-mono text-slate-500">
+          <Clock className="w-3 h-3" />
+          <span className="text-slate-300">{time}</span>
+          <span>·</span>
+          <span>{date}</span>
+        </div>
+        <button className="relative p-1.5 rounded-lg transition-colors hover:bg-white/5">
+          <Bell className="w-4 h-4 text-slate-400" />
+          <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-red-500 border border-[#080F22]" />
+        </button>
+        <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-white/5 transition-colors">
+          <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
+            style={{ background: 'linear-gradient(135deg,#3B82F6,#6366F1)' }}>
+            JD
+          </div>
+          <span className="text-xs text-slate-300 hidden sm:inline">John Doe</span>
+          <ChevronDown className="w-3 h-3 text-slate-500" />
+        </div>
+      </div>
+    </div>
   );
 }

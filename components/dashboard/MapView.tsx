@@ -1,95 +1,78 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
+import type { ActiveLayers } from './Sidebar';
 
-export function MapView() {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.6 }}
-      className="flex-1 bg-gradient-to-br from-blue-900/20 to-blue-800/10 border border-border rounded-lg overflow-hidden relative"
-    >
-      {/* SVG Map Grid */}
-      <svg className="w-full h-full opacity-10" style={{ position: 'absolute' }}>
-        <defs>
-          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" strokeWidth="0.5" />
-          </pattern>
-        </defs>
-        <rect width="100%" height="100%" fill="url(#grid)" />
-      </svg>
-
-      {/* Animated background elements */}
-      <motion.div
-        animate={{ opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 4, repeat: Infinity }}
-        className="absolute inset-0 bg-gradient-to-t from-green-500/10 via-transparent to-transparent"
-      />
-
-      {/* Farm Zones */}
-      <div className="relative w-full h-full p-8">
-        {/* Plot A - Maize */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="absolute top-12 left-16 w-32 h-32 border-2 border-green-500/60 rounded-lg bg-green-500/10 flex items-center justify-center cursor-pointer group hover:border-green-500 transition-all"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 3, repeat: Infinity }}
-            className="text-center"
-          >
-            <div className="text-green-400 text-2xl mb-1">🌽</div>
-            <div className="text-xs font-semibold text-green-300">Plot A</div>
-            <div className="text-xs text-green-400/70">Maize • Healthy</div>
-          </motion.div>
-        </motion.div>
-
-        {/* Plot B - Tobacco */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="absolute top-48 right-24 w-36 h-36 border-2 border-red-500/60 rounded-lg bg-red-500/10 flex items-center justify-center cursor-pointer hover:border-red-500 transition-all"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-            className="text-center"
-          >
-            <div className="text-red-400 text-2xl mb-1">🚨</div>
-            <div className="text-xs font-semibold text-red-300">Plot B</div>
-            <div className="text-xs text-red-400/70">Tobacco • Stress</div>
-          </motion.div>
-        </motion.div>
-
-        {/* Plot C - Soybeans */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.4 }}
-          className="absolute bottom-16 left-1/2 w-32 h-32 border-2 border-yellow-500/60 rounded-lg bg-yellow-500/10 flex items-center justify-center cursor-pointer hover:border-yellow-500 transition-all"
-        >
-          <motion.div
-            animate={{ scale: [1, 1.1, 1] }}
-            transition={{ duration: 3, repeat: Infinity, delay: 1 }}
-            className="text-center"
-          >
-            <div className="text-yellow-400 text-2xl mb-1">🌾</div>
-            <div className="text-xs font-semibold text-yellow-300">Plot C</div>
-            <div className="text-xs text-yellow-400/70">Soybeans • Good</div>
-          </motion.div>
-        </motion.div>
-
-        {/* Weather/Risk Zone */}
-        <motion.div
-          animate={{ scale: [1, 1.05, 1], opacity: [0.4, 0.6, 0.4] }}
-          transition={{ duration: 4, repeat: Infinity }}
-          className="absolute top-20 right-32 w-40 h-40 rounded-full border border-blue-400/30 bg-blue-500/5"
-        />
+const LeafletMap = dynamic(() => import('./LeafletMap'), {
+  ssr: false, loading: () => (
+    <div className="w-full h-full flex items-center justify-center" style={{ background: '#07102A' }}>
+      <div className="text-center space-y-3">
+        <div className="w-8 h-8 border-2 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mx-auto" />
+        <p className="text-slate-500 text-xs font-mono">Loading satellite imagery…</p>
       </div>
-    </motion.div>
+    </div>
+  )
+});
+
+interface Props {
+  onSelectPlot: (name: string) => void;
+  activeLayers: ActiveLayers;
+  selectedPlotId: string;
+}
+
+export function MapView({ onSelectPlot, activeLayers, selectedPlotId }: Props) {
+  return (
+    <div className="flex-1 relative overflow-hidden">
+      <LeafletMap onSelectPlot={onSelectPlot} activeLayers={activeLayers} selectedPlotId={selectedPlotId} />
+
+      {/* NDVI Legend overlay */}
+      <div className="absolute bottom-8 left-4 z-[1000] px-3 py-2.5 rounded-lg text-xs"
+        style={{ background: 'rgba(7,16,42,0.88)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="text-[10px] font-mono text-slate-500 mb-2 tracking-wider">NDVI INDEX</div>
+        <div className="flex items-center gap-1 mb-1">
+          <div className="w-24 h-2.5 rounded-sm" style={{ background: 'linear-gradient(to right, #EF4444, #F59E0B, #84CC16, #10B981)' }} />
+        </div>
+        <div className="flex justify-between text-[9px] font-mono text-slate-500 w-24">
+          <span>0.0</span><span>0.5</span><span>1.0</span>
+        </div>
+      </div>
+
+      {/* Mini weather widget */}
+      <div className="absolute top-4 right-4 z-[1000] px-3 py-3 rounded-lg min-w-[160px]"
+        style={{ background: 'rgba(7,16,42,0.88)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="text-[10px] font-mono text-slate-500 mb-2 tracking-wider">LIVE WEATHER</div>
+        <div className="space-y-1.5 text-xs">
+          {[
+            { label: 'Temp', val: '28°C', color: '#F97316' },
+            { label: 'Rainfall', val: '12mm', color: '#3B82F6' },
+            { label: 'Humidity', val: '65%', color: '#06B6D4' },
+            { label: 'Wind', val: '14 km/h', color: '#94A3B8' },
+          ].map(r => (
+            <div key={r.label} className="flex justify-between items-center">
+              <span className="text-slate-500">{r.label}</span>
+              <span className="font-mono font-semibold" style={{ color: r.color }}>{r.val}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Zoom controls */}
+      <div className="absolute bottom-8 right-4 z-[1000] flex flex-col rounded-lg overflow-hidden"
+        style={{ border: '1px solid rgba(255,255,255,0.1)' }}>
+        {['+', '−'].map(c => (
+          <button key={c}
+            className="w-8 h-8 text-slate-300 text-lg font-light flex items-center justify-center hover:bg-white/10 transition-colors font-mono"
+            style={{ background: 'rgba(7,16,42,0.9)' }}>
+            {c}
+          </button>
+        ))}
+      </div>
+
+      {/* Scale bar */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[1000] flex items-end gap-1">
+        <div className="h-2 border-l border-b border-r border-slate-500" style={{ width: 80 }} />
+        <span className="text-[10px] font-mono text-slate-500 mb-0.5">500 m</span>
+      </div>
+    </div>
   );
 }
