@@ -51,7 +51,7 @@ export default function SoilScanPage() {
     }, [step]);
 
     return (
-        <div className="flex flex-col h-screen overflow-hidden text-slate-300 font-sans" style={{ background: '#050A18' }}>
+        <div className="flex flex-col h-screen overflow-hidden text-foreground font-sans bg-background transition-colors duration-500">
             {/* Immersive HUD Header */}
             <header className="flex items-center justify-between px-8 py-5 border-b border-white/5 bg-black/40 backdrop-blur-2xl z-50">
                 <div className="flex items-center gap-8">

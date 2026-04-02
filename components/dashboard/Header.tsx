@@ -1,14 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Bell, ChevronDown, Satellite, Clock } from 'lucide-react';
+import { Bell, ChevronDown, Satellite, Clock, Sun, Moon } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 
 export function Header() {
   const [time, setTime] = useState('');
   const [date, setDate] = useState('');
+  const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const tick = () => {
       const n = new Date();
       setTime(n.toTimeString().slice(0, 8));
@@ -19,64 +23,81 @@ export function Header() {
     return () => clearInterval(id);
   }, []);
 
-  return (
-    <div className="flex items-center justify-between px-4 h-12 border-b flex-shrink-0"
-      style={{ background: '#080F22', borderColor: 'rgba(255,255,255,0.08)' }}>
+  const toggleTheme = () => {
+    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+  };
 
+  return (
+    <header className="flex items-center justify-between px-4 h-12 border-b flex-shrink-0 bg-card/95 backdrop-blur-md border-border sticky top-0 z-[1001]">
       {/* Left: Logo + status */}
       <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded-md flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg,#059669,#10B981)' }}>
+        <div className="flex items-center gap-2 cursor-pointer">
+          <div className="w-6 h-6 rounded-md flex items-center justify-center bg-linear-to-br from-emerald-600 to-emerald-400">
             <span className="text-xs">🌾</span>
           </div>
-          <span className="text-white font-bold text-sm tracking-wide">AgriVerse</span>
-          <span className="text-slate-400 text-xs font-mono">|</span>
-          <span className="text-slate-400 text-xs font-mono">Salima Farm Site</span>
+          <span className="font-bold text-sm tracking-wide text-foreground">AgriVerse</span>
+          <span className="text-muted-foreground/30 text-xs font-mono">|</span>
+          <span className="text-muted-foreground text-xs font-mono">Salima Farm Site</span>
         </div>
-        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
-          style={{ borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.05)' }}>
+        <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-500/20 bg-emerald-500/5">
           <motion.div animate={{ opacity: [0.5, 1, 0.5] }} transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-          <span className="text-[10px] text-emerald-400 font-mono tracking-wider">SYSTEMS OPERATIONAL</span>
+            className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span className="text-[10px] text-emerald-500 font-mono tracking-wider">SYSTEMS OPERATIONAL</span>
         </div>
       </div>
 
       {/* Center: Farm selector */}
-      <div className="flex items-center gap-3">
-        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors"
-          style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#CBD5E1' }}>
+      <div className="hidden md:flex items-center gap-3">
+        <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors bg-secondary/50 border border-border text-foreground hover:bg-secondary">
           <span>Salima Farm</span>
-          <ChevronDown className="w-3 h-3 text-slate-500" />
+          <ChevronDown className="w-3 h-3 text-muted-foreground" />
         </button>
-        <div className="flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-mono"
-          style={{ background: 'rgba(59,130,246,0.08)', border: '1px solid rgba(59,130,246,0.2)', color: '#60A5FA' }}>
+        <div className="flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-mono bg-blue-500/10 border border-blue-500/20 text-blue-500">
           <Satellite className="w-3 h-3" />
           <span>Next pass 14:32 UTC</span>
         </div>
       </div>
 
-      {/* Right: Clock + alerts + user */}
+      {/* Right: Clock + Theme Toggle + alerts + user */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center gap-1.5 text-xs font-mono text-slate-500">
+        <div className="hidden lg:flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
           <Clock className="w-3 h-3" />
-          <span className="text-slate-300">{time}</span>
+          <span className="text-foreground">{time}</span>
           <span>·</span>
           <span>{date}</span>
         </div>
-        <button className="relative p-1.5 rounded-lg transition-colors hover:bg-white/5">
-          <Bell className="w-4 h-4 text-slate-400" />
-          <span className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-red-500 border border-[#080F22]" />
+
+        <div className="w-[1px] h-4 bg-border mx-1 hidden lg:block" />
+
+        {/* Theme Toggle */}
+        <button
+          onClick={toggleTheme}
+          className="p-1.5 rounded-lg transition-all bg-secondary/50 border border-border hover:bg-secondary text-foreground active:scale-95"
+          aria-label="Toggle Theme"
+        >
+          {mounted && resolvedTheme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Moon className="w-4 h-4 text-blue-500" />
+          )}
         </button>
-        <div className="flex items-center gap-2 px-2.5 py-1 rounded-lg cursor-pointer hover:bg-white/5 transition-colors">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-            style={{ background: 'linear-gradient(135deg,#3B82F6,#6366F1)' }}>
+
+        <button className="relative p-1.5 rounded-lg transition-colors hover:bg-secondary text-muted-foreground hover:text-foreground border border-transparent hover:border-border">
+          <Bell className="w-4 h-4" />
+          <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-red-500 ring-2 ring-background" />
+        </button>
+
+        <div className="flex items-center gap-2 px-1.5 py-1 rounded-lg cursor-pointer hover:bg-secondary transition-colors group">
+          <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white bg-linear-to-br from-blue-600 to-indigo-500 shadow-sm">
             JD
           </div>
-          <span className="text-xs text-slate-300 hidden sm:inline">John Doe</span>
-          <ChevronDown className="w-3 h-3 text-slate-500" />
+          <div className="hidden sm:block">
+            <div className="text-[11px] font-semibold text-foreground leading-none">John Doe</div>
+            <div className="text-[9px] text-muted-foreground">Admin Site</div>
+          </div>
+          <ChevronDown className="w-3 h-3 text-muted-foreground group-hover:text-foreground transition-colors" />
         </div>
       </div>
-    </div>
+    </header>
   );
 }

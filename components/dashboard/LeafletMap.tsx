@@ -12,23 +12,22 @@ interface Props {
     selectedPlotId: string;
 }
 
-// Fix leaflet default icon paths broken by webpack
-if (typeof window !== 'undefined') {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const L = require('leaflet');
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-        iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-    });
-}
-
 function MapStyler() {
     const map = useMap();
     useEffect(() => {
         const container = map.getContainer();
-        container.style.background = '#07102A';
+        container.style.background = 'var(--background)';
+        // Aggressive Reset for Focus Rectangles and Outlines
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .leaflet-interactive { outline: none !important; -webkit-tap-highlight-color: transparent; }
+            .leaflet-interactive:focus { outline: none !important; box-shadow: none !important; cursor: crosshair; }
+            path.leaflet-interactive { pointer-events: auto; outline: none !important; }
+            .leaflet-container:focus { outline: none !important; }
+            .leaflet-container { outline: none !important; }
+            * { -webkit-tap-highlight-color: transparent; }
+        `;
+        document.head.appendChild(style);
     }, [map]);
     return null;
 }
@@ -44,9 +43,9 @@ export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId 
         <MapContainer
             center={[-13.654979, 34.484174]}
             zoom={16}
-            style={{ width: '100%', height: '100%', background: '#07102A' }}
+            style={{ width: '100%', height: '100%', background: 'var(--background)' }}
             zoomControl={false}
-            attributionControl={true}
+            attributionControl={false}
         >
             <MapStyler />
 

@@ -43,45 +43,48 @@ function Toggle({ on, onToggle, color }: { on: boolean; onToggle: () => void; co
     return (
         <button onClick={onToggle}
             className="relative w-8 h-4 rounded-full flex-shrink-0 transition-all duration-300"
-            style={{ background: on ? color + '60' : 'rgba(255,255,255,0.08)', border: `1px solid ${on ? color : 'rgba(255,255,255,0.1)'}` }}>
+            style={{
+                background: on ? color + '40' : 'var(--secondary)',
+                border: `1px solid ${on ? color + '80' : 'var(--border)'}`
+            }}>
             <motion.div animate={{ x: on ? 14 : 2 }} transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 className="absolute top-0.5 w-3 h-3 rounded-full"
-                style={{ background: on ? color : '#475569' }} />
+                style={{ background: on ? color : 'var(--muted-foreground)' }} />
         </button>
     );
 }
 
 export function Sidebar({ activeLayers, setActiveLayers }: Props) {
     const router = useRouter();
-    const [collapsed, setCollapsed] = useState(false);
 
     const toggle = (key: keyof ActiveLayers) =>
         setActiveLayers({ ...activeLayers, [key]: !activeLayers[key] });
 
     return (
         <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.5 }}
-            className="flex flex-col flex-shrink-0 h-full overflow-y-auto"
-            style={{ width: 248, background: '#07102A', borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+            className="flex flex-col flex-shrink-0 h-full overflow-y-auto bg-sidebar border-r border-border"
+            style={{ width: 248 }}>
 
             {/* Map Layers Section */}
             <div className="px-3 pt-4 pb-2">
-                <div className="flex items-center justify-between mb-3">
-                    <span className="text-[10px] font-mono text-slate-500 tracking-widest uppercase">Map Layers</span>
-                    <Database className="w-3 h-3 text-slate-600" />
+                <div className="flex items-center justify-between mb-3 px-2">
+                    <span className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase">Map Layers</span>
+                    <Database className="w-3 h-3 text-muted-foreground/50" />
                 </div>
                 <div className="space-y-0.5">
                     {LAYER_DEFS.map(({ key, icon: Icon, label, color, badge }) => {
                         const on = activeLayers[key];
                         return (
                             <div key={key}
-                                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer transition-colors"
-                                style={{ background: on ? 'rgba(255,255,255,0.04)' : 'transparent' }}
+                                className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg cursor-pointer transition-colors hover:bg-secondary/20"
+                                style={{ background: on ? 'var(--secondary)' : 'transparent' }}
                                 onClick={() => toggle(key)}>
-                                <Icon className="w-4 h-4 flex-shrink-0" style={{ color: on ? color : '#475569' }} />
-                                <span className="flex-1 text-xs font-medium" style={{ color: on ? '#CBD5E1' : '#475569' }}>{label}</span>
+                                <Icon className="w-4 h-4 flex-shrink-0" style={{ color: on ? color : 'var(--muted-foreground)' }} />
+                                <span className="flex-1 text-xs font-medium text-foreground"
+                                    style={{ color: on ? 'var(--foreground)' : 'var(--muted-foreground)' }}>{label}</span>
                                 {badge && (
                                     <span className="text-[9px] font-mono px-1.5 py-0.5 rounded leading-none"
-                                        style={{ background: color + '25', color, border: `1px solid ${color}50` }}>
+                                        style={{ background: color + '20', color, border: `1px solid ${color}40` }}>
                                         {badge}
                                     </span>
                                 )}
@@ -92,35 +95,39 @@ export function Sidebar({ activeLayers, setActiveLayers }: Props) {
                 </div>
             </div>
 
-            <div className="mx-3 my-2" style={{ height: 1, background: 'rgba(255,255,255,0.06)' }} />
+            <div className="mx-3 my-2 h-[1px] bg-border" />
 
             {/* Data Sources */}
             <div className="px-3 py-2">
-                <span className="text-[10px] font-mono text-slate-500 tracking-widest uppercase">Data Sources</span>
-                <div className="mt-2 space-y-1">
+                <div className="px-2 mb-2">
+                    <span className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase">Data Sources</span>
+                </div>
+                <div className="space-y-1">
                     {DATA_SOURCES.map(s => (
-                        <div key={s.label} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-white/[0.03] cursor-pointer transition-colors">
+                        <div key={s.label} className="flex items-center gap-2.5 px-2.5 py-2 rounded-lg hover:bg-secondary/40 cursor-pointer transition-colors group">
                             <div className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: s.dot }} />
                             <div className="flex-1 min-w-0">
-                                <div className="text-xs text-slate-300 leading-tight">{s.label}</div>
-                                <div className="text-[10px] text-slate-600 leading-tight">{s.sub}</div>
+                                <div className="text-xs text-foreground leading-tight">{s.label}</div>
+                                <div className="text-[10px] text-muted-foreground leading-tight">{s.sub}</div>
                             </div>
-                            <ChevronRight className="w-3 h-3 text-slate-600 flex-shrink-0" />
+                            <ChevronRight className="w-3 h-3 text-muted-foreground/40 group-hover:text-muted-foreground flex-shrink-0 transition-colors" />
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div className="mx-3 my-2" style={{ height: 1, background: 'rgba(255,255,255,0.06)' }} />
+            <div className="mx-3 my-2 h-[1px] bg-border" />
 
             {/* Tools */}
             <div className="px-3 py-2">
-                <span className="text-[10px] font-mono text-slate-500 tracking-widest uppercase">Tools</span>
-                <div className="mt-2 space-y-0.5">
+                <div className="px-2 mb-2">
+                    <span className="text-[10px] font-mono text-muted-foreground tracking-widest uppercase">Tools</span>
+                </div>
+                <div className="space-y-0.5">
                     {TOOLS.map(({ icon: Icon, label }) => (
                         <button key={label}
-                            className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-slate-500 hover:text-slate-300 hover:bg-white/[0.04] transition-colors text-left">
-                            <Icon className="w-4 h-4" />
+                            className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors text-left group">
+                            <Icon className="w-4 h-4 group-hover:text-primary transition-colors" />
                             {label}
                         </button>
                     ))}
@@ -131,13 +138,13 @@ export function Sidebar({ activeLayers, setActiveLayers }: Props) {
             <div className="flex-1" />
 
             {/* Bottom: version + logout */}
-            <div className="px-3 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-                <div className="text-[10px] font-mono text-slate-600 mb-3 space-y-0.5">
+            <div className="px-3 py-4 border-t border-border">
+                <div className="px-2 text-[10px] font-mono text-muted-foreground mb-3 space-y-0.5">
                     <div>AgriVerse v2.1.0 · Malawi</div>
                     <div>Last Calibration: Apr 1, 2026</div>
                 </div>
                 <button onClick={() => router.push('/login')}
-                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-slate-500 hover:text-red-400 hover:bg-red-500/10 transition-colors">
+                    className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs text-muted-foreground hover:text-red-500 hover:bg-red-500/10 transition-colors">
                     <LogOut className="w-4 h-4" />
                     Sign Out
                 </button>

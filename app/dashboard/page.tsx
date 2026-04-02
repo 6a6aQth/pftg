@@ -25,7 +25,7 @@ export default function DashboardPage() {
   const selectedPlot = PLOTS[selectedPlotName] ?? null;
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden" style={{ background: '#060D1F' }}>
+    <div className="flex flex-col h-screen overflow-hidden bg-background">
       <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar activeLayers={activeLayers} setActiveLayers={setActiveLayers} />
