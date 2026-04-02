@@ -42,8 +42,8 @@ const NDVI_TOOLTIP: Record<string, string> = {
 export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId }: Props) {
     return (
         <MapContainer
-            center={[-13.956, 33.756]}
-            zoom={14}
+            center={[-13.654979, 34.484174]}
+            zoom={16}
             style={{ width: '100%', height: '100%', background: '#07102A' }}
             zoomControl={false}
             attributionControl={true}
@@ -90,44 +90,44 @@ export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId 
                 </Polygon>
             ))}
 
-            {/* Rainfall intensity circle */}
+            {/* Rainfall intensity circle - Centered on Farm */}
             {activeLayers.rainfall && (
                 <Circle
-                    center={[-13.960, 33.758]}
-                    radius={600}
+                    center={[-13.654979, 34.484174]}
+                    radius={200}
                     pathOptions={{ color: '#3B82F6', fillColor: '#3B82F6', fillOpacity: 0.08, weight: 1, dashArray: '6 4' }}
                 >
                     <Tooltip>Rainfall Zone · 45mm expected · High leaching risk</Tooltip>
                 </Circle>
             )}
 
-            {/* Alert zone circle */}
+            {/* Alert zone circle - Centered on Plot B (the stressed one) */}
             {activeLayers.alerts && (
                 <Circle
-                    center={[-13.960, 33.758]}
-                    radius={280}
+                    center={[-13.6555, 34.4848]}
+                    radius={80}
                     pathOptions={{ color: '#EF4444', fillColor: '#EF4444', fillOpacity: 0.1, weight: 1.5 }}
                 >
                     <Tooltip>⚠ Alert Zone · Plot B · Stress Detected</Tooltip>
                 </Circle>
             )}
 
-            {/* Soil moisture zone */}
+            {/* Soil moisture zone - Centered on Plot A */}
             {activeLayers.soilMoisture && (
                 <Circle
-                    center={[-13.954, 33.751]}
-                    radius={350}
+                    center={[-13.6545, 34.4838]}
+                    radius={100}
                     pathOptions={{ color: '#06B6D4', fillColor: '#06B6D4', fillOpacity: 0.07, weight: 1, dashArray: '4 3' }}
                 >
                     <Tooltip>Soil Moisture · Plot A · Medium 45%</Tooltip>
                 </Circle>
             )}
 
-            {/* Temperature zone */}
+            {/* Temperature zone - Centered on Farm */}
             {activeLayers.temperature && (
                 <Circle
-                    center={[-13.956, 33.757]}
-                    radius={800}
+                    center={[-13.654979, 34.484174]}
+                    radius={300}
                     pathOptions={{ color: '#F97316', fillColor: '#F97316', fillOpacity: 0.04, weight: 0.5, dashArray: '8 6' }}
                 >
                     <Tooltip>Temperature Zone · 28°C · High</Tooltip>

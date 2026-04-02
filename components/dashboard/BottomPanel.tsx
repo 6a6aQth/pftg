@@ -14,7 +14,7 @@ export function BottomPanel({ selectedPlot }: Props) {
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-1.5">
           <MapPin className="w-3 h-3 text-emerald-400" />
-          <span className="text-slate-400">{selectedPlot?.coordinates ?? '-13.956°S, 33.757°E'}</span>
+          <span className="text-slate-400">{selectedPlot?.coordinates ?? '-13.655°S, 34.484°E'}</span>
         </div>
         <span className="text-slate-700">|</span>
         <div className="flex items-center gap-1.5">

@@ -21,7 +21,7 @@ export const PLOTS: Record<string, Plot> = {
             { day: 'Mar 27', ndvi: 0.65 }, { day: 'Mar 28', ndvi: 0.67 }, { day: 'Mar 29', ndvi: 0.69 },
             { day: 'Mar 30', ndvi: 0.71 }, { day: 'Mar 31', ndvi: 0.72 }, { day: 'Apr 1', ndvi: 0.73 }, { day: 'Apr 2', ndvi: 0.74 },
         ],
-        coordinates: '-13.954°S, 33.751°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
+        coordinates: '-13.6545°S, 34.4838°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
     },
     'Plot B': {
         id: 'plot-b', name: 'Plot B', crop: 'Tobacco (Burley K-22)', area: '2.8 ha',
@@ -33,7 +33,7 @@ export const PLOTS: Record<string, Plot> = {
             { day: 'Mar 27', ndvi: 0.58 }, { day: 'Mar 28', ndvi: 0.54 }, { day: 'Mar 29', ndvi: 0.51 },
             { day: 'Mar 30', ndvi: 0.48 }, { day: 'Mar 31', ndvi: 0.46 }, { day: 'Apr 1', ndvi: 0.44 }, { day: 'Apr 2', ndvi: 0.42 },
         ],
-        coordinates: '-13.960°S, 33.758°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
+        coordinates: '-13.6555°S, 34.4848°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
     },
     'Plot C': {
         id: 'plot-c', name: 'Plot C', crop: 'Soybeans (Magoye)', area: '3.5 ha',
@@ -45,21 +45,27 @@ export const PLOTS: Record<string, Plot> = {
             { day: 'Mar 27', ndvi: 0.59 }, { day: 'Mar 28', ndvi: 0.60 }, { day: 'Mar 29', ndvi: 0.61 },
             { day: 'Mar 30', ndvi: 0.60 }, { day: 'Mar 31', ndvi: 0.62 }, { day: 'Apr 1', ndvi: 0.61 }, { day: 'Apr 2', ndvi: 0.61 },
         ],
-        coordinates: '-13.953°S, 33.761°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
+        coordinates: '-13.6542°S, 34.4845°E', lastScan: '2 hours ago', satellite: 'ESA Sentinel-2',
     },
 };
 
 export const PLOT_POLYGONS: Record<string, { coords: [number, number][]; color: string; fillColor: string }> = {
     'Plot A': {
-        coords: [[-13.952, 33.748], [-13.956, 33.748], [-13.956, 33.754], [-13.952, 33.754]],
+        coords: [
+            [-13.6545, 34.4835], [-13.6542, 34.4842], [-13.6548, 34.4848], [-13.6552, 34.4840]
+        ],
         color: '#10B981', fillColor: '#10B981',
     },
     'Plot B': {
-        coords: [[-13.958, 33.756], [-13.962, 33.756], [-13.962, 33.761], [-13.958, 33.761]],
+        coords: [
+            [-13.6552, 34.4840], [-13.6548, 34.4848], [-13.6555, 34.4855], [-13.6560, 34.4845]
+        ],
         color: '#EF4444', fillColor: '#EF4444',
     },
     'Plot C': {
-        coords: [[-13.953, 33.760], [-13.957, 33.760], [-13.957, 33.765], [-13.953, 33.765]],
+        coords: [
+            [-13.6542, 34.4842], [-13.6538, 34.4848], [-13.6544, 34.4852], [-13.6548, 34.4848]
+        ],
         color: '#F59E0B', fillColor: '#F59E0B',
     },
 };
