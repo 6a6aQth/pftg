@@ -46,6 +46,7 @@ export function MapView({ onSelectPlot, activeLayers, selectedPlotId }: Props) {
             { label: 'Temp', val: '28°C', color: '#F97316' },
             { label: 'Rainfall', val: '12mm', color: '#3B82F6' },
             { label: 'Humidity', val: '65%', color: '#06B6D4' },
+            { label: 'Sunlight', val: 'High', color: '#F59E0B' },
             { label: 'Wind', val: '14 km/h', color: '#94A3B8' },
           ].map(r => (
             <div key={r.label} className="flex justify-between items-center">

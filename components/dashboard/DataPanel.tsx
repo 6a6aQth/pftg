@@ -53,7 +53,7 @@ export function DataPanel({ selectedPlot }: Props) {
               <span className="text-[10px] text-emerald-400 font-mono">LIVE</span>
             </div>
           </div>
-          <h2 className="text-white font-bold text-sm">Chitedze Farm · {selectedPlot.name}</h2>
+          <h2 className="text-white font-bold text-sm">Salima Farm · {selectedPlot.name}</h2>
           <p className="text-slate-500 text-[11px] font-mono mt-0.5">{selectedPlot.coordinates}</p>
         </div>
 

@@ -112,16 +112,41 @@ export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId 
                 </Circle>
             )}
 
-            {/* Soil moisture zone - Centered on Plot A */}
-            {activeLayers.soilMoisture && (
-                <Circle
-                    center={[-13.6545, 34.4838]}
-                    radius={100}
-                    pathOptions={{ color: '#06B6D4', fillColor: '#06B6D4', fillOpacity: 0.07, weight: 1, dashArray: '4 3' }}
-                >
-                    <Tooltip>Soil Moisture · Plot A · Medium 45%</Tooltip>
-                </Circle>
-            )}
+            {/* Soil Moisture [REFINED] - Now Plot-Specific Polygons */}
+            {activeLayers.soilMoisture && Object.entries(PLOT_POLYGONS).map(([name, p]) => {
+                const moistureColors: Record<string, string> = {
+                    'Plot A': '#0891B2',
+                    'Plot B': '#0E7490',
+                    'Plot C': '#22D3EE',
+                };
+                return (
+                    <Polygon
+                        key={`sm-${name}`}
+                        positions={p.coords}
+                        pathOptions={{ color: '#06B6D4', fillColor: moistureColors[name], fillOpacity: 0.4, weight: 1, dashArray: '4 2' }}
+                    >
+                        <Tooltip sticky>{name} · Soil Moisture · {name === 'Plot B' ? '31% (Low)' : name === 'Plot A' ? '68% (High)' : '52% (Optimal)'}</Tooltip>
+                    </Polygon>
+                );
+            })}
+
+            {/* Fertilizer Progress Heatmap [NEW] */}
+            {activeLayers.fertilizerHeatmap && Object.entries(PLOT_POLYGONS).map(([name, p]) => {
+                const heatColors: Record<string, string> = {
+                    'Plot A': '#10B981',
+                    'Plot B': '#EF4444',
+                    'Plot C': '#F59E0B',
+                };
+                return (
+                    <Polygon
+                        key={`heat-${name}`}
+                        positions={p.coords}
+                        pathOptions={{ color: 'transparent', fillColor: heatColors[name], fillOpacity: 0.5, weight: 0 }}
+                    >
+                        <Tooltip sticky>{name} · Fertilizer Progress · {name === 'Plot A' ? '100%' : name === 'Plot B' ? '12%' : '65%'}</Tooltip>
+                    </Polygon>
+                );
+            })}
 
             {/* Temperature zone - Centered on Farm */}
             {activeLayers.temperature && (

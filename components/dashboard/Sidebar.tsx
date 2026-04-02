@@ -5,12 +5,13 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   Satellite, CloudRain, Droplets, Thermometer, AlertTriangle,
-  Leaf, Ruler, PenLine, FileDown, LogOut, ChevronRight, Database,
+  Leaf, Ruler, PenLine, FileDown, LogOut, ChevronRight, Database, Activity
 } from 'lucide-react';
 
 export interface ActiveLayers {
   ndvi: boolean; rainfall: boolean; soilMoisture: boolean;
   temperature: boolean; alerts: boolean; cropHealth: boolean;
+  fertilizerHeatmap: boolean;
 }
 
 interface Props {
@@ -22,6 +23,7 @@ const LAYER_DEFS = [
   { key: 'ndvi', icon: Satellite, label: 'NDVI Vegetation Index', color: '#10B981', badge: 'LIVE' },
   { key: 'rainfall', icon: CloudRain, label: 'Rainfall Intensity', color: '#3B82F6', badge: '45mm' },
   { key: 'soilMoisture', icon: Droplets, label: 'Soil Moisture', color: '#06B6D4', badge: null },
+  { key: 'fertilizerHeatmap', icon: Activity, label: 'Fertilizer Progress', color: '#FCD34D', badge: 'NEW' },
   { key: 'temperature', icon: Thermometer, label: 'Temperature Zones', color: '#F97316', badge: null },
   { key: 'alerts', icon: AlertTriangle, label: 'Alert Zones', color: '#EF4444', badge: '1' },
   { key: 'cropHealth', icon: Leaf, label: 'Crop Health Overlay', color: '#84CC16', badge: null },

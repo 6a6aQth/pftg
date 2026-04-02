@@ -31,8 +31,8 @@ export function Header() {
             <span className="text-xs">🌾</span>
           </div>
           <span className="text-white font-bold text-sm tracking-wide">AgriVerse</span>
-          <span className="text-slate-600 text-xs font-mono">|</span>
-          <span className="text-slate-400 text-xs font-mono">Chitedze Farm Complex</span>
+          <span className="text-slate-400 text-xs font-mono">|</span>
+          <span className="text-slate-400 text-xs font-mono">Salima Farm Site</span>
         </div>
         <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
           style={{ borderColor: 'rgba(16,185,129,0.3)', background: 'rgba(16,185,129,0.05)' }}>
@@ -46,7 +46,7 @@ export function Header() {
       <div className="flex items-center gap-3">
         <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs transition-colors"
           style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#CBD5E1' }}>
-          <span>Chitedze Farm</span>
+          <span>Salima Farm</span>
           <ChevronDown className="w-3 h-3 text-slate-500" />
         </button>
         <div className="flex items-center gap-1 px-2.5 py-1 rounded text-[10px] font-mono"

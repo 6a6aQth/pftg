@@ -15,6 +15,7 @@ const DEFAULT_LAYERS: ActiveLayers = {
   temperature: false,
   alerts: true,
   cropHealth: true,
+  fertilizerHeatmap: false,
 };
 
 export default function DashboardPage() {
