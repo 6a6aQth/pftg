@@ -32,10 +32,10 @@ export function Header() {
       {/* Left: Logo + status */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 cursor-pointer">
-          <div className="w-6 h-6 rounded-md flex items-center justify-center bg-linear-to-br from-emerald-600 to-emerald-400">
-            <span className="text-xs">🌾</span>
+          <div className="w-8 h-8 flex items-center justify-center">
+            <img src="/Dimba White Logo bg removed.png" alt="DIMBA" className="w-full h-full object-contain" />
           </div>
-          <span className="font-bold text-sm tracking-wide text-foreground">AgriVerse</span>
+          <span className="font-bold text-sm tracking-wide text-foreground uppercase tracking-wider">DIMBA</span>
           <span className="text-muted-foreground/30 text-xs font-mono">|</span>
           <span className="text-muted-foreground text-xs font-mono">Salima Farm Site</span>
         </div>

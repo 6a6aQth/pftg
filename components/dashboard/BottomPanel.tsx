@@ -37,7 +37,7 @@ export function BottomPanel({ selectedPlot }: Props) {
         <div className="w-[1px] h-3 bg-border" />
         <div className="flex items-center gap-1.5 px-1">
           <Activity className="w-3 h-3" />
-          <span>AgriVerse v2.1.0</span>
+          <span>DIMBA v2.1.0</span>
         </div>
       </div>
     </footer>

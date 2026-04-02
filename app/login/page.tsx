@@ -93,6 +93,12 @@ export default function LoginPage() {
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.15 }}
           className="rounded-[2rem] p-10 bg-card/60 dark:bg-card/40 backdrop-blur-3xl border border-border shadow-2xl shadow-black/10 transition-colors">
 
+          <div className="flex flex-col items-center gap-6 mb-10">
+            <div className="w-24 h-24 flex items-center justify-center">
+              <img src="/Dimba White Logo bg removed.png" alt="DIMBA Logo" className="w-full h-full object-contain" />
+            </div>
+            <h1 className="text-5xl font-black text-foreground tracking-tight leading-none uppercase">DIMBA</h1>
+          </div>
           <div className="flex items-center gap-3 mb-8">
             <div className="w-8 h-8 rounded-xl bg-primary/10 flex items-center justify-center">
               <Shield className="w-4 h-4 text-primary" />
@@ -107,7 +113,7 @@ export default function LoginPage() {
             <div className="space-y-2">
               <label className="text-[10px] text-muted-foreground font-mono tracking-[0.2em] uppercase ml-1">Personnel ID (Email)</label>
               <input type="email" value={email} onChange={e => setEmail(e.target.value)}
-                placeholder="operator@agriverse.ai"
+                placeholder="operator@dimba.farm"
                 className="w-full px-5 py-3.5 rounded-xl text-sm bg-secondary/50 border border-border text-foreground placeholder:text-muted-foreground/30 transition-all focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500/50"
               />
             </div>

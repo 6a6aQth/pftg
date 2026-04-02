@@ -69,7 +69,7 @@ export function DataPanel({ selectedPlot }: Props) {
               <div className="w-8 h-8 rounded-full bg-slate-900 dark:bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold">AV</div>
               <div className="flex-1">
                 <div className="flex justify-between items-center">
-                  <p className="text-[10px] font-bold text-slate-900 dark:text-white">AgriVerse Agent</p>
+                  <p className="text-[10px] font-bold text-slate-900 dark:text-white">DIMBA Agent</p>
                   <span className="text-[8px] text-slate-400 uppercase font-mono">Now</span>
                 </div>
                 <p className="text-[10px] text-slate-700 dark:text-slate-300 leading-tight">ALERT: {selectedPlot.recommendation}</p>

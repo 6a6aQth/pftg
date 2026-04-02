@@ -9,7 +9,7 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'AgriVerse - Precision Agriculture AI Dashboard',
+  title: 'DIMBA - Precision Agriculture AI Dashboard',
   description: 'AI-powered precision agriculture platform for farmers in Africa. Monitor crops, analyze environmental conditions, and receive AI-driven fertilizer recommendations.',
   generator: 'v0.app',
   icons: {

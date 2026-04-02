@@ -140,7 +140,7 @@ export function Sidebar({ activeLayers, setActiveLayers }: Props) {
             {/* Bottom: version + logout */}
             <div className="px-3 py-4 border-t border-border">
                 <div className="px-2 text-[10px] font-mono text-muted-foreground mb-3 space-y-0.5">
-                    <div>AgriVerse v2.1.0 · Malawi</div>
+                    <div>DIMBA v2.1.0 · Malawi</div>
                     <div>Last Calibration: Apr 1, 2026</div>
                 </div>
                 <button onClick={() => router.push('/login')}

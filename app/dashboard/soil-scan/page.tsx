@@ -39,7 +39,7 @@ export default function SoilScanPage() {
     ];
 
     useEffect(() => {
-        setRefId('AV-' + Math.floor(Math.random() * 90000 + 10000));
+        setRefId('DB-' + Math.floor(Math.random() * 90000 + 10000));
     }, []);
 
     useEffect(() => {
@@ -79,13 +79,13 @@ export default function SoilScanPage() {
         <div className="min-h-screen bg-background text-foreground transition-colors duration-500 flex flex-col">
             {/* Professional Top Bar */}
             <header className="h-16 border-b border-border bg-card/50 backdrop-blur-md px-6 flex items-center justify-between sticky top-0 z-50">
-                <div className="flex items-center gap-4">
-                    <Link href="/dashboard" className="p-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-transparent hover:border-border">
-                        <ArrowLeft className="w-5 h-5" />
-                    </Link>
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 flex items-center justify-center">
+                        <img src="/Dimba White Logo bg removed.png" alt="DIMBA" className="w-full h-full object-contain" />
+                    </div>
                     <div className="flex flex-col">
                         <span className="text-[10px] uppercase font-bold tracking-widest text-emerald-500 leading-none mb-1">Precision Intelligence</span>
-                        <h1 className="text-sm font-black tracking-tight uppercase">Soil Analysis Hub</h1>
+                        <h1 className="text-sm font-black tracking-tight uppercase">DIMBA Analysis Hub</h1>
                     </div>
                 </div>
                 <div className="flex items-center gap-3">

@@ -16,7 +16,7 @@ export default function Home() {
         <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center mx-auto animate-pulse">
           <span className="text-4xl">🌾</span>
         </div>
-        <p className="text-foreground font-semibold">AgriVerse</p>
+        <p className="text-foreground font-semibold">DIMBA</p>
         <p className="text-muted-foreground text-sm">Precision Intelligence for Smarter Farming</p>
       </div>
     </div>
