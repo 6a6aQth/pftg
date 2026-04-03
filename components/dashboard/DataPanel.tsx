@@ -64,9 +64,9 @@ export function DataPanel({ selectedPlot }: Props) {
               initial={{ y: 50, opacity: 0, scale: 0.9 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 20, opacity: 0 }}
-              className="absolute bottom-4 left-4 right-4 z-[100] bg-white dark:bg-slate-900 rounded-xl p-3 shadow-2xl flex gap-3 border border-slate-200 dark:border-slate-800"
+              className="absolute bottom-4 left-4 right-4 z-[100] bg-white dark:bg-card rounded-xl p-3 shadow-2xl flex gap-3 border border-slate-200 dark:border-border"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-900 dark:bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold">AV</div>
+              <div className="w-8 h-8 rounded-full bg-black dark:bg-emerald-600 flex items-center justify-center text-white text-[10px] font-bold">AV</div>
               <div className="flex-1">
                 <div className="flex justify-between items-center">
                   <p className="text-[10px] font-bold text-slate-900 dark:text-white">DIMBA Agent</p>

@@ -1,75 +1,18 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import type { ActiveLayers } from './Sidebar';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const LeafletMap = dynamic(() => import('./LeafletMap'), {
-  ssr: false, loading: () => (
-    <div className="w-full h-full flex items-center justify-center bg-background">
-      <div className="text-center space-y-3">
-        <div className="w-8 h-8 border-2 border-emerald-500/30 border-t-emerald-500 rounded-full animate-spin mx-auto" />
-        <p className="text-muted-foreground text-xs font-mono">Loading satellite imagery…</p>
-      </div>
-    </div>
-  )
-});
-
-interface Props {
-  onSelectPlot: (name: string) => void;
-  activeLayers: ActiveLayers;
-  selectedPlotId: string;
-}
-
-export function MapView({ onSelectPlot, activeLayers, selectedPlotId }: Props) {
-  return (
-    <div className="flex-1 relative overflow-hidden">
-      <LeafletMap onSelectPlot={onSelectPlot} activeLayers={activeLayers} selectedPlotId={selectedPlotId} />
-
-      {/* NDVI Legend overlay */}
-      <div className="absolute bottom-8 left-4 z-[1000] px-3 py-2.5 rounded-xl text-xs bg-card/90 backdrop-blur-md border border-border">
-        <div className="text-[10px] font-mono text-muted-foreground mb-2 tracking-wider">NDVI INDEX</div>
-        <div className="flex items-center gap-1 mb-1">
-          <div className="w-24 h-2.5 rounded-sm" style={{ background: 'linear-gradient(to right, #EF4444, #F59E0B, #84CC16, #10B981)' }} />
-        </div>
-        <div className="flex justify-between text-[9px] font-mono text-muted-foreground w-24">
-          <span>0.0</span><span>0.5</span><span>1.0</span>
-        </div>
-      </div>
-
-      {/* Mini weather widget */}
-      <div className="absolute top-4 right-4 z-[1000] px-3 py-3 rounded-xl min-w-[160px] bg-card/90 backdrop-blur-md border border-border shadow-2xl">
-        <div className="text-[10px] font-mono text-muted-foreground mb-2 tracking-wider">LIVE WEATHER</div>
-        <div className="space-y-1.5 text-xs">
-          {[
-            { label: 'Temp', val: '28°C', color: '#F97316' },
-            { label: 'Rainfall', val: '12mm', color: '#3B82F6' },
-            { label: 'Humidity', val: '65%', color: '#06B6D4' },
-            { label: 'Sunlight', val: 'High', color: '#F59E0B' },
-            { label: 'Wind', val: '14 km/h', color: '#94A3B8' },
-          ].map(r => (
-            <div key={r.label} className="flex justify-between items-center">
-              <span className="text-muted-foreground">{r.label}</span>
-              <span className="font-mono font-bold" style={{ color: r.color }}>{r.val}</span>
+export const MapView = dynamic(() => import('./LeafletMap'), {
+    ssr: false,
+    loading: () => (
+        <div className="flex-1 h-full bg-background border-x border-border relative overflow-hidden flex items-center justify-center">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.05),transparent_70%)]" />
+            <Skeleton className="w-full h-full bg-black/50" />
+            <div className="absolute flex flex-col items-center gap-4">
+                <div className="w-12 h-12 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin" />
+                <span className="text-[10px] font-mono text-emerald-500/50 uppercase tracking-[0.3em]">Calibrating GIS ...</span>
             </div>
-          ))}
         </div>
-      </div>
-
-      {/* Zoom controls */}
-      <div className="absolute bottom-8 right-4 z-[1000] flex flex-col rounded-xl overflow-hidden border border-border shadow-2xl">
-        {['+', '−'].map(c => (
-          <button key={c}
-            className="w-10 h-10 text-foreground text-xl font-light flex items-center justify-center bg-card/95 hover:bg-secondary transition-colors font-mono active:bg-secondary/80">
-            {c}
-          </button>
-        ))}
-      </div>
-
-      {/* Scale bar */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-[1000] flex items-end gap-1">
-        <div className="h-2 border-l border-b border-r border-slate-500" style={{ width: 80 }} />
-        <span className="text-[10px] font-mono text-slate-500 mb-0.5">500 m</span>
-      </div>
-    </div>
-  );
-}
+    )
+});
