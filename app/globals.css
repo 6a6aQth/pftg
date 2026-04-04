@@ -104,12 +104,7 @@
         @apply bg-background text-foreground;
     }
 
-    /* Dark Mode Map Polish */
-    .dark .leaflet-tile-container {
-        filter: brightness(0.5) contrast(1.2) saturate(0.8) !important;
-    }
+    /* Removed map filters */
 
-    .dark .leaflet-container {
-        background: #000000 !important;
-    }
+    /* Removed background styling */
 }

@@ -16,7 +16,7 @@ function MapStyler() {
     const map = useMap();
     useEffect(() => {
         const container = map.getContainer();
-        container.style.background = 'var(--background)';
+        // container.style.background = 'var(--background)';
         // Aggressive Reset for Focus Rectangles and Outlines
         const style = document.createElement('style');
         style.innerHTML = `
@@ -43,7 +43,7 @@ export default function LeafletMap({ onSelectPlot, activeLayers, selectedPlotId 
         <MapContainer
             center={[-13.654979, 34.484174]}
             zoom={16}
-            style={{ width: '100%', height: '100%', background: 'var(--background)' }}
+            style={{ width: '100%', height: '100%' }}
             zoomControl={false}
             attributionControl={false}
         >
